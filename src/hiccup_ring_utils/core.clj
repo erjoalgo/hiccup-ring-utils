@@ -1,17 +1,18 @@
 (ns hiccup-ring-utils.core
-  (:require [hiccup.core :refer [html]])
-  )
+  (:require [hiccup.core :refer [html]]
+            [clojure.stacktrace :refer [print-stack-trace]]))
 
 (defmacro wrap-http-exception [& form]
   "catch any clj-http/client exceptions and return them as a string"
   `(try ~@form
         (catch Exception e#
-          (clojure.stacktrace/print-stack-trace e#)
           (if (-> e# .getMessage (.startsWith "clj-http: status"))
             (str (-> e# .getData :status) ":"
                  (-> e# .getData :body))
-            (do (clojure.stacktrace/print-stack-trace e#)
-                (throw e#))))))
+            (do
+              ;;(print-stack-trace e#)
+              (throw e#))))))
+
 
 (defn- assoc-noclobber
   ;;https://github.com/amalloy/useful/blob/bcb07414cf3dd5a09794b76490c0cf18758f1888/src/flatland/useful/parallel.clj#L33
