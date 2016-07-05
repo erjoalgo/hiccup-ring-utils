@@ -115,7 +115,7 @@ hiccup html elements"
   (html-table-for-rows
    (map (fn [[name val]]
           [[:div [:b name] ": "]
-           [:div (or (str val) "NULL")]]) clj-map)))
+           [:div (or (pr-str val) "NULL")]]) clj-map)))
 
 (defn route-for-entries-table
   [req-to-entries-fun
