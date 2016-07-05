@@ -7,7 +7,7 @@
   `(try ~@form
         (catch Exception e#
           (if (-> e# .getMessage (.startsWith "clj-http: status"))
-            (str (-> e# .getData :status) ":"
+            (str (-> e# .getData :status) " "
                  (-> e# .getData :body))
             (do
               ;;(print-stack-trace e#)
