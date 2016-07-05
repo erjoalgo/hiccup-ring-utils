@@ -13,6 +13,17 @@
               ;;(print-stack-trace e#)
               (throw e#))))))
 
+(defn wrap-http-exception-middleware [handler]
+  (fn [req]
+    (try (handler req)
+         (catch Exception e#
+           (if-not (-> e# .getMessage (.startsWith "clj-http: status"))
+             (throw e#);;non clj
+             (let [status (-> e# .getData :status)
+                   body (-> e# .getData :body)
+                   message (str status " " body)]
+               {:status 500
+                :body message}))))))
 
 (defn- assoc-noclobber
   ;;https://github.com/amalloy/useful/blob/bcb07414cf3dd5a09794b76490c0cf18758f1888/src/flatland/useful/parallel.clj#L33
