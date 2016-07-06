@@ -97,8 +97,8 @@ An optinal tmp-contents are shown while XHR is executed"
                      js-lazy-load-self-replace
                      {:ID id :URL url})]
      [:div {:id id}
-      [:script {:type "text/javascript"} javascript]
-      tmp-contents])))
+      (conj tmp-contents
+            [:script {:type "text/javascript"} javascript])])))
 
 
 (defn html-table-for-rows [rows & additional-args]
